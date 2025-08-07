@@ -17,4 +17,10 @@ atomic_shared_ptr_pool.h:
 test_atomic_shared_ptr_pool.cpp:
 - (stress)test sample on multiple read/write
 
+any_blackboard.h:
+- construct a key-value blackboard storage class using std::any
+
+test_any_blackboard.cpp:
+- (stress)test sample on multiple blackboard key-value read/write
+
 Note: does it complete eliminate dynamic system heap allocation? No, the usage of shared_ptr's life-cycle would need to dynamically create/destroy shared_ptr itself, which happens do system heap allocation, though it is very small size. Refer to boost::intrusive_ptr instead to improve this.

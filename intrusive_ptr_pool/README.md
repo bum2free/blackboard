@@ -20,7 +20,7 @@ test_atomic_intrusive_ptr_pool.cpp:
 - (stress)test sample on multiple read/write
 
 variant_blackboard.h:
-- construct a key-value blackboard storage class
+- construct a key-value blackboard storage class using std::variant
 
 test_variant_blackboard.cpp:
 - (stress)test sample on multiple blackboard key-value read/write

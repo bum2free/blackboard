@@ -1,6 +1,7 @@
 #ifndef __ATOMIC_SHARED_PTR_POOL_H__
 #define __ATOMIC_SHARED_PTR_POOL_H__
 #include <memory>
+#include <set>
 #include <vector>
 
 class SpinLock {
