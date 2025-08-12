@@ -24,3 +24,9 @@ test_any_blackboard.cpp:
 - (stress)test sample on multiple blackboard key-value read/write
 
 Note: does it complete eliminate dynamic system heap allocation? No, the usage of shared_ptr's life-cycle would need to dynamically create/destroy shared_ptr itself, which happens do system heap allocation, though it is very small size. Refer to boost::intrusive_ptr instead to improve this.
+
+atomic_no_prealloc_shared_ptr_pool.h:
+- construct the data raw pointer when there is needed at first time
+
+test_no_prealloc_atomic_shared_ptr_pool.cpp:
+- (stress)test sample on multiple read/write
