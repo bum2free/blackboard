@@ -4,23 +4,23 @@
 #include <set>
 #include <vector>
 
-class SpinLock {
-private:
-    std::atomic_flag flag = ATOMIC_FLAG_INIT;
-public:
-    void lock() {
-        while (flag.test_and_set(std::memory_order_acquire)) {
-            // Spin wait
-        }
-    }
-
-    void unlock() {
-        flag.clear(std::memory_order_release);
-    }
-};
-
 template<typename T>
 class AtomicSharedPtrPool {
+    class SpinLock {
+    private:
+        std::atomic_flag flag = ATOMIC_FLAG_INIT;
+    public:
+        void lock() {
+            while (flag.test_and_set(std::memory_order_acquire)) {
+                // Spin wait
+            }
+        }
+
+        void unlock() {
+            flag.clear(std::memory_order_release);
+        }
+    };
+
 private:
     std::shared_ptr<T> m_ptr = nullptr;
     SpinLock m_spinlock_ptr;

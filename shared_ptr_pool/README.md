@@ -30,3 +30,9 @@ atomic_no_prealloc_shared_ptr_pool.h:
 
 test_no_prealloc_atomic_shared_ptr_pool.cpp:
 - (stress)test sample on multiple read/write
+
+any_no_prealloc_blackboard.h:
+- construct a key-value blackboard storage class using std::any
+
+test_any_no_prealloc_blackboard.cpp:
+- (stress)test sample on multiple blackboard key-value read/write
