@@ -24,8 +24,8 @@ class BlackBoardAny {
         }
     };
 public:
-    template<typename T>
-    std::shared_ptr<T> getOutput(const char* topic) {
+    template<typename T, typename... Args>
+    std::shared_ptr<T> getOutput(const char* topic, Args&&... args) {
         m_spinlock.lock();
         auto it = m_data_map.find(topic);
         if (it == m_data_map.end()) {
@@ -34,7 +34,7 @@ public:
         m_spinlock.unlock();
         auto ptr = std::any_cast<AtomicSharedPtrPool<T>*>(it->second);
         if (ptr) {
-            return ptr->getOutput();
+            return ptr->getOutput(std::forward<Args>(args)...);
         }
         return nullptr;
     }

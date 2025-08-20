@@ -30,14 +30,15 @@ public:
     AtomicSharedPtrPool() {
     }
 
-    std::shared_ptr<T> getOutput(void) {
+    template<typename... Args>
+    std::shared_ptr<T> getOutput(Args&&... args) {
         // Acquire spinlock for available_ptrs
         m_spinlock_available_ptrs.lock();
         bool has_available = !m_available_ptrs.empty();
 
         if (!has_available) {
             m_spinlock_available_ptrs.unlock();
-            auto *raw = new T();
+            auto *raw = new T(std::forward<Args>(args)...);
             m_spinlock_available_ptrs.lock();
             m_available_ptrs.insert(raw);
             printf("Created new pointer: %p\n", raw);
