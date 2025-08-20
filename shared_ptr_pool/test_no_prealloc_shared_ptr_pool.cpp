@@ -8,7 +8,7 @@
 #include <set>
 #include <cassert>
 
-#include "atomic_no_prealloc_shared_ptr_pool.h"
+#include "no_prealloc_shared_ptr_pool.h"
 
 class MyData {
 public:

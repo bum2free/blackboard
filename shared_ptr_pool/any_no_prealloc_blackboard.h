@@ -6,7 +6,7 @@
 #include <map>
 #include <memory>
 #include <string>
-#include "atomic_no_prealloc_shared_ptr_pool.h"
+#include "no_prealloc_shared_ptr_pool.h"
 
 class BlackBoardAny {
     class SpinLock {
