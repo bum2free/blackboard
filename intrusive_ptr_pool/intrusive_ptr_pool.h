@@ -39,11 +39,12 @@ class IntrusiveWrapper {
 public:
     std::atomic<int> refcount{0};
 
-    IntrusiveWrapper(T* ptr) : p_data(ptr) {}
+    IntrusiveWrapper(T* ptr, void *poll) : p_data(ptr), pool(poll) {}
 
     T* get() { return p_data; }
-private:
+public:
     T* p_data;
+    void *pool = nullptr;
 };
 
 template<typename T>
@@ -59,17 +60,16 @@ public:
     template<typename... Args>
     boost::intrusive_ptr<IntrusiveWrapper<T>> getOutput(Args&&... args) {
         m_spinlock_available_ptrs.lock();
-        auto it = std::find_if(m_map_ptrs.begin(), m_map_ptrs.end(), [](const auto& pair) {
-            return pair.first->refcount == 1;
-        });
-        if (it == m_map_ptrs.end()) {
-            auto *raw = new T(std::forward<Args>(args)...);
-            auto ptr = new IntrusiveWrapper<T>(raw);
-            m_map_ptrs[ptr] = boost::intrusive_ptr<IntrusiveWrapper<T>>(ptr);
+        if (m_map_ptrs.empty()) {
             m_spinlock_available_ptrs.unlock();
-            return ptr;
+            auto *raw = new T(std::forward<Args>(args)...);
+            auto ptr = new IntrusiveWrapper<T>(raw, this);
+            auto new_ptr = boost::intrusive_ptr<IntrusiveWrapper<T>>(ptr);
+            return new_ptr;
         }
-        auto new_ptr = m_map_ptrs[it->first];
+        auto new_ptr = m_map_ptrs.back();
+        //remove it from the set
+        m_map_ptrs.pop_back();
         m_spinlock_available_ptrs.unlock();
         return new_ptr;
     }
@@ -89,9 +89,12 @@ public:
 
     void recycle(IntrusiveWrapper<T>* ptr) {
         //printf("Recycling pointer: %p\n", ptr);
+        m_spinlock_available_ptrs.lock();
+        m_map_ptrs.push_back(boost::intrusive_ptr<IntrusiveWrapper<T>>(ptr));
+        m_spinlock_available_ptrs.unlock();
     }
 
-    std::map<IntrusiveWrapper<T>*, boost::intrusive_ptr<IntrusiveWrapper<T>>> m_map_ptrs;
+    std::vector<boost::intrusive_ptr<IntrusiveWrapper<T>>> m_map_ptrs;
 };
 
 // Required by boost::intrusive_ptr
@@ -103,9 +106,12 @@ inline void intrusive_ptr_add_ref(IntrusiveWrapper<T>* p) {
 template<typename T>
 inline void intrusive_ptr_release(IntrusiveWrapper<T>* p) {
     if (--p->refcount == 0) {
-        std::cout << "Deleting intrusive_ptr: " << p << std::endl;
-        delete p;
-        return;
+        IntrusivePtrPool<T>* pool = static_cast<IntrusivePtrPool<T>*>(p->pool);
+        if (pool) {
+            pool->recycle(p);
+        } else {
+            std::cerr << "Warning: IntrusivePtrPool is null, cannot recycle pointer: " << p << std::endl;
+        }
     }
     //std::cout << "Releasing reference: " << p << ", new refcount: " << p->refcount << std::endl;
 }
