@@ -11,8 +11,8 @@
 template<typename... DataTypes>
 class BlackBoardIntrusiveVariant {
 public:
-    template<typename T>
-    boost::intrusive_ptr<IntrusiveWrapper<T>> getOutput(const char* topic) {
+    template<typename T, typename... Args>
+    boost::intrusive_ptr<IntrusiveWrapper<T>> getOutput(const char* topic, Args&&... args) {
         // hold read lock
         std::shared_lock<std::shared_mutex> read_lock(m_mutex);
         auto it = m_data_map.find(topic);
@@ -32,7 +32,7 @@ public:
             read_lock.lock();
         }
         if (auto ptr = std::get_if<std::unique_ptr<IntrusivePtrPool<T>>>(&(it->second))) {
-            return (*ptr)->getOutput();
+            return (*ptr)->getOutput(std::forward<Args>(args)...);
         }
         return nullptr;
     }

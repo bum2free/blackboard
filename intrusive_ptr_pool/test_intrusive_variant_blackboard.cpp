@@ -18,6 +18,7 @@ public:
 
 class MyData2 {
 public:
+    MyData2(float v) : value(v) {}
     float value;
 };
 
@@ -70,7 +71,7 @@ int main(void)
         //std::this_thread::sleep_for(std::chrono::seconds(1));
         std::this_thread::sleep_for(std::chrono::milliseconds(20));
 
-        auto new_data_2 = g_blackboard.getOutput<MyData2>("data2");
+        auto new_data_2 = g_blackboard.getOutput<MyData2>("data2", 3.14);
         new_data_2->get()->value = static_cast<float>(rand()) / RAND_MAX;
         printf("Main thread: data2: %f\n", new_data_2->get()->value);
         g_blackboard.setOutput("data2", new_data_2);
