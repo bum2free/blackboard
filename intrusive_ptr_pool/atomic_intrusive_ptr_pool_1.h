@@ -1,5 +1,5 @@
-#ifndef __ATOMIC_INTRUSIVE_PTR_POOL_H__
-#define __ATOMIC_INTRUSIVE_PTR_POOL_H__
+#ifndef __ATOMIC_INTRUSIVE_PTR_POOL_1_H__
+#define __ATOMIC_INTRUSIVE_PTR_POOL_1_H__
 
 #include <boost/intrusive_ptr.hpp>
 #include <vector>

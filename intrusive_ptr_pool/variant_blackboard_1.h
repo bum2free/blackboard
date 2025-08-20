@@ -1,10 +1,10 @@
-#ifndef __VARIANT_BLACKBOARD_H__
-#define __VARIANT_BLACKBOARD_H__
+#ifndef __VARIANT_BLACKBOARD_1_H__
+#define __VARIANT_BLACKBOARD_1_H__
 #include <map>
 #include <memory>
 #include <variant>
 
-#include "atomic_intrusive_ptr_pool.h"
+#include "atomic_intrusive_ptr_pool_1.h"
 
 template<typename... DataTypes>
 class BlackBoardVariant {
