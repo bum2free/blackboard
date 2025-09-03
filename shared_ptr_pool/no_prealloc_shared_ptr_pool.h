@@ -2,7 +2,6 @@
 #define __NO_PREALLOC_SHARED_PTR_POOL_H__
 #include <memory>
 #include <mutex>
-#include <set>
 #include <vector>
 
 //#define USE_ATOMIC_LOCK
@@ -49,22 +48,18 @@ public:
     std::shared_ptr<T> getOutput(Args&&... args) {
         // Acquire spinlock for available_ptrs
         m_spinlock_available_ptrs.lock();
-        bool has_available = !m_available_ptrs.empty();
-
-        if (!has_available) {
+        if (m_available_ptrs.empty()) {
+            // Allocate outside the lock
             m_spinlock_available_ptrs.unlock();
-            auto *raw = new T(std::forward<Args>(args)...);
+            T* raw = new T(std::forward<Args>(args)...);
             m_spinlock_available_ptrs.lock();
-            m_available_ptrs.insert(raw);
+            m_available_ptrs.push_back(raw);
             //printf("Created new pointer: %p\n", raw);
         }
-        //get a pointer from the available set
-        auto it = m_available_ptrs.begin();
-        std::shared_ptr<T> new_ptr(*it, [this](T* ptr) {
-            recycle(ptr);
-        });
-        m_available_ptrs.erase(it);
-
+        // LIFO reuse for better cache locality
+        T* ptr = m_available_ptrs.back();
+        m_available_ptrs.pop_back();
+        std::shared_ptr<T> new_ptr(ptr, [this](T* p) { recycle(p); });
         m_spinlock_available_ptrs.unlock();
         return new_ptr;
     }
@@ -91,12 +86,11 @@ private:
         // Acquire spinlock for available_ptrs
         m_spinlock_available_ptrs.lock();
         //printf("Recycling pointer: %p\n", ptr);
-        m_available_ptrs.insert(ptr);
-
+        m_available_ptrs.push_back(ptr);
         m_spinlock_available_ptrs.unlock();
     }
 
-    std::set<T*> m_available_ptrs;
+    std::vector<T*> m_available_ptrs;
 };
 
 #endif
