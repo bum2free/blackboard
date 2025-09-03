@@ -37,7 +37,6 @@ class AtomicSharedPtrPool {
 
 private:
     std::shared_ptr<T> m_ptr = nullptr;
-    SpinLock m_spinlock_ptr;
     SpinLock m_spinlock_available_ptrs;
 
 public:
@@ -65,20 +64,11 @@ public:
     }
 
     void setOutput(std::shared_ptr<T> new_ptr) {
-        // Acquire spinlock for ptr
-        m_spinlock_ptr.lock();
-
-        m_ptr = new_ptr;
-        m_spinlock_ptr.unlock();
+        std::atomic_store(&m_ptr, new_ptr);
     }
 
     std::shared_ptr<T> getInput(void) {
-        // Acquire spinlock for ptr
-        m_spinlock_ptr.lock();
-
-        auto input = m_ptr;
-        m_spinlock_ptr.unlock();
-        return input;
+        return std::atomic_load(&m_ptr);
     }
 
 private:
