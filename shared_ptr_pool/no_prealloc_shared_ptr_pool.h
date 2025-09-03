@@ -5,6 +5,11 @@
 #include <vector>
 
 //#define USE_ATOMIC_LOCK
+#define USE_CONCURRENTQUEUE
+
+#ifdef USE_CONCURRENTQUEUE
+#include "../concurrentqueue/concurrentqueue.h"
+#endif
 
 template<typename T>
 class AtomicSharedPtrPool {
@@ -37,7 +42,9 @@ class AtomicSharedPtrPool {
 
 private:
     std::shared_ptr<T> m_ptr = nullptr;
+#ifndef USE_CONCURRENTQUEUE
     SpinLock m_spinlock_available_ptrs;
+#endif
 
 public:
     AtomicSharedPtrPool() {
@@ -45,6 +52,15 @@ public:
 
     template<typename... Args>
     std::shared_ptr<T> getOutput(Args&&... args) {
+#ifdef USE_CONCURRENTQUEUE
+        T* raw_ptr;
+        bool found = m_available_ptrs.try_dequeue(raw_ptr);
+        if (!found) {
+            raw_ptr = new T(std::forward<Args>(args)...);
+        }
+        std::shared_ptr<T> new_ptr(raw_ptr, [this](T* p) { recycle(p); });
+        return new_ptr;
+#else
         // Acquire spinlock for available_ptrs
         m_spinlock_available_ptrs.lock();
         if (m_available_ptrs.empty()) {
@@ -60,6 +76,7 @@ public:
         m_available_ptrs.pop_back();
         std::shared_ptr<T> new_ptr(ptr, [this](T* p) { recycle(p); });
         m_spinlock_available_ptrs.unlock();
+#endif
         return new_ptr;
     }
 
@@ -73,14 +90,21 @@ public:
 
 private:
     void recycle(T* ptr) {
+#ifdef USE_CONCURRENTQUEUE
+        m_available_ptrs.enqueue(ptr);
+#else
         // Acquire spinlock for available_ptrs
         m_spinlock_available_ptrs.lock();
         //printf("Recycling pointer: %p\n", ptr);
         m_available_ptrs.push_back(ptr);
         m_spinlock_available_ptrs.unlock();
+#endif
     }
-
+#ifdef USE_CONCURRENTQUEUE
+    moodycamel::ConcurrentQueue<T*> m_available_ptrs;
+#else
     std::vector<T*> m_available_ptrs;
+#endif
 };
 
 #endif
