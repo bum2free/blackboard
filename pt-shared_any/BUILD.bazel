@@ -1,0 +1,37 @@
+cc_library(
+    name = "pt_shared_any",
+    hdrs = [
+        "includes/shared_ptr_pool.h",
+        "includes/shared_any_blackboard.h",
+    ],
+    includes = ["includes"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//concurrentqueue",
+        "//common",
+    ]
+)
+
+cc_binary(
+    name = "test_shared_ptr_pool",
+    srcs = [
+        "tests/test_shared_ptr_pool.cpp",
+    ],
+    copts = ["-DUSE_CONCURRENTQUEUE"],
+    linkopts = ["-lpthread"],
+    deps = [
+        ":pt_shared_any"
+    ]
+)
+
+cc_binary(
+    name = "test_shared_any_blackboard",
+    srcs = [
+        "tests/test_shared_any_blackboard.cpp",
+    ],
+    copts = ["-DUSE_CONCURRENTQUEUE"],
+    linkopts = ["-lpthread"],
+    deps = [
+        ":pt_shared_any"
+    ]
+)

@@ -1,0 +1,5 @@
+cc_library(
+    name = "concurrentqueue",
+    hdrs = ["concurrentqueue.h"],
+    visibility = ["//visibility:public"],
+)
