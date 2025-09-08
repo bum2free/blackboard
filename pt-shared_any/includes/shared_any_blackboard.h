@@ -9,7 +9,7 @@
 #include "shared_ptr_pool.h"
 #include "common/dummy_lock.h"
 
-class BlackBoardAny {
+class BlackBoardSharedAny {
 public:
     template<typename T, typename... Args>
     std::shared_ptr<T> getOutput(const char* topic, Args&&... args) {

@@ -1,0 +1,12 @@
+cc_library(
+    name = "pt_dummy",
+    hdrs = [
+        "includes/dummy_blackboard.h",
+    ],
+    includes = ["includes"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//concurrentqueue",
+        "//common",
+    ]
+)

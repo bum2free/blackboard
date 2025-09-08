@@ -15,7 +15,7 @@ public:
     float value;
 };
 
-BlackBoardAny g_blackboard;
+BlackBoardSharedAny g_blackboard;
 
 const size_t NUM_OF_CONSUMERS = 2;
 int main(void)
