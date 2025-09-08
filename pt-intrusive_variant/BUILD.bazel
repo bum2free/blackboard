@@ -17,7 +17,10 @@ cc_binary(
     srcs = [
         "tests/test_intrusive_ptr_pool.cpp",
     ],
-    copts = ["-DUSE_CONCURRENTQUEUE"],
+    copts = [
+        "-DUSE_CONCURRENTQUEUE",
+        "-std=c++17",
+    ],
     linkopts = ["-lpthread"],
     deps = [
         ":pt_intrusive_variant"
@@ -29,7 +32,10 @@ cc_binary(
     srcs = [
         "tests/test_intrusive_variant_blackboard.cpp",
     ],
-    copts = ["-DUSE_CONCURRENTQUEUE"],
+    copts = [
+        "-DUSE_CONCURRENTQUEUE",
+        "-std=c++17",
+    ],
     linkopts = ["-lpthread"],
     deps = [
         ":pt_intrusive_variant"

@@ -37,5 +37,6 @@ cc_binary(
         "-DUSE_THREAD_TIMER",
         "-std=c++17",
     ],
+    linkopts = ["-lpthread"],
     visibility = ["//visibility:public"],
 )
