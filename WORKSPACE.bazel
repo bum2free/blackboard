@@ -1,1 +1,1 @@
-workspace(name = "test_blackboard")
+workspace(name = "blackboard")
