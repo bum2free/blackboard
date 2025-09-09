@@ -36,6 +36,10 @@ int test_cyber_async_blackboard(const PayloadDescs& payload_descs,
 int test_cyber_norecv_blackboard(const PayloadDescs& payload_descs,
     const WriterDescs& writer_descs,
     const ReaderDescs& reader_descs);
+int test_sharedAny_CyberRecord_blackboard(const PayloadDescs& payload_descs,
+    const WriterDescs& writer_descs,
+    const ReaderDescs& reader_descs,
+    bool record_mode);
 
 int main(int argc, char** argv) {
     //parse command line arguments
@@ -213,6 +217,14 @@ int main(int argc, char** argv) {
         // Use cyber::blackboard with no recv reader
         std::cout << "Using cyber_norecv_blackboard" << std::endl;
         test_cyber_norecv_blackboard(payload_descs, writer_descs, reader_descs);
+    } else if (bb_type == "cyber_record") {
+        // Use cyber::blackboard with no recv reader
+        std::cout << "Using shared_any_blackboard with cyber record" << std::endl;
+        test_sharedAny_CyberRecord_blackboard(payload_descs, writer_descs, reader_descs, true);
+    } else if (bb_type == "cyber_playback") {
+        // Use cyber::blackboard with no recv reader
+        std::cout << "Using shared_any_blackboard with cyber playback" << std::endl;
+        test_sharedAny_CyberRecord_blackboard(payload_descs, writer_descs, reader_descs, false);
 #endif
     } else {
         std::cerr << "Unknown blackboard type: " << bb_type << std::endl;

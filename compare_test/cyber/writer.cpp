@@ -1,4 +1,5 @@
 #include "cyber/writer.h"
+#include "shared_any_cyber_recoder_blackboard.h"
 
 WriterCyberWrapper::WriterCyberWrapper(const WriterDescription &desc, bool use_cyber_timestamp) :
     Writer(desc) {
@@ -61,4 +62,44 @@ std::pair<size_t, size_t> WriterCyberWrapper::run_send(void) {
     }
 
     return std::make_pair(send_count, send_bytes);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+#include "cyber/examples/proto/examples.pb.h"
+#include "cyber/time/time.h"
+
+using apollo::cyber::Time;
+using apollo::cyber::examples::proto::Chatter;
+
+extern BlackBoardSharedAnyCyberRecorder& get_BlackBoardSharedAnyCyberRecorder(bool record_mode = true);
+
+WriterSharedPtrAnyCyberRecord::WriterSharedPtrAnyCyberRecord(const WriterDescription &desc)
+    : Writer(desc), payload_descs(desc.payload_descs) {
+}
+
+std::pair<size_t, size_t> WriterSharedPtrAnyCyberRecord::run_send(void) {
+    size_t send_count = 0, send_bytes = 0;
+    auto& blackboard = get_BlackBoardSharedAnyCyberRecorder();
+
+    for (const auto& pt : payload_descs) {
+        if (pt.type == FixedLengthPayload::NAME()) {
+            auto payload = blackboard.getOutput<Chatter>(pt.topic.c_str());
+            payload->set_timestamp(Time::Now().ToNanosecond());
+            if (blackboard.setOutput(pt.topic.c_str(), payload) == true) {
+                send_count++;
+                send_bytes += payload->ByteSizeLong();
+            }
+        } else if (pt.type == DynamicLengthPayload::NAME()) {
+            auto payload = blackboard.getOutput<Chatter>(pt.topic.c_str());
+            payload->set_timestamp(Time::Now().ToNanosecond());
+            if (blackboard.setOutput(pt.topic.c_str(), payload) == true) {
+                send_count++;
+                send_bytes += payload->ByteSizeLong();
+            }
+        } else {
+            assert(false && "Unknown payload type");
+        }
+    }
+
+    return {send_count, send_bytes};
 }

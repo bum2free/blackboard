@@ -24,4 +24,15 @@ private:
     std::shared_ptr<apollo::cyber::Timer> cyber_timer_;
 };
 
+class WriterSharedPtrAnyCyberRecord : public Writer {
+public:
+    WriterSharedPtrAnyCyberRecord(const WriterDescription &desc);
+
+    virtual ~WriterSharedPtrAnyCyberRecord() = default;
+
+    virtual std::pair<size_t, size_t> run_send(void) override;
+private:
+    std::vector<PayloadDescription> payload_descs;
+};
+
 #endif

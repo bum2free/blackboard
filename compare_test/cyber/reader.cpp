@@ -2,6 +2,7 @@
 #include "auto_test/cpu_load.h"
 #include "auto_test/statistics.h"
 
+#include "shared_any_cyber_recoder_blackboard.h"
 #include <chrono>
 
 ReaderCyberWrapper::ReaderCyberWrapper(const ReaderDescription& desc, bool async) :
@@ -108,3 +109,37 @@ std::pair<size_t, size_t> ReaderCyberWrapper::run_receive(void)
     return std::make_pair(recv_count, recv_bytes);
 }
 
+//////////////////////////////////////////////////////////////////////////////
+#include "cyber/examples/proto/examples.pb.h"
+#include "cyber/time/time.h"
+
+using apollo::cyber::Time;
+using apollo::cyber::examples::proto::Chatter;
+
+extern BlackBoardSharedAnyCyberRecorder& get_BlackBoardSharedAnyCyberRecorder(bool record_mode = true);
+
+ReaderSharedPtrAnyCyberRecord::ReaderSharedPtrAnyCyberRecord(const ReaderDescription& desc)
+    : Reader(desc) {
+    this->payload_descs = desc.payload_descs;
+}
+
+std::pair<size_t, size_t> ReaderSharedPtrAnyCyberRecord::run_receive(void) {
+    size_t recv_count = 0, recv_bytes = 0;
+    auto& blackboard = get_BlackBoardSharedAnyCyberRecorder();
+    for (const auto& pt : payload_descs) {
+        auto& type_name = pt.type;
+        if (type_name == FixedLengthPayload::NAME()) {
+            auto payload = blackboard.getInput<Chatter>(pt.topic.c_str());
+            recv_count += 1;
+            recv_bytes += payload ? payload->ByteSizeLong() : 0;
+        } else if (type_name == DynamicLengthPayload::NAME()) {
+            auto payload = blackboard.getInput<Chatter>(pt.topic.c_str());
+            recv_count += 1;
+            recv_bytes += payload ? payload->ByteSizeLong() : 0;
+        } else {
+            assert(false && "Unknown payload type");
+        }
+    }
+
+    return std::make_pair(recv_count, recv_bytes);
+}

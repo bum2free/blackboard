@@ -19,4 +19,12 @@ private:
     std::map<std::string, std::shared_ptr<apollo::cyber::ReaderBase>> readers_;
 };
 
+class ReaderSharedPtrAnyCyberRecord : public Reader {
+public:
+    ReaderSharedPtrAnyCyberRecord(const ReaderDescription& desc);
+
+    virtual std::pair<size_t, size_t> run_receive(void) override;
+private:
+    std::vector<PayloadDescription> payload_descs;
+};
 #endif
