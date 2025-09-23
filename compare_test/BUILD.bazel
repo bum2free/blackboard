@@ -1,17 +1,7 @@
-_BASE_SRCS = [
-    "srcs/main.cpp",
-    "srcs/payload.cpp",
-    "srcs/cpu_load.cpp",
-    "srcs/writer.cpp",
-    "srcs/reader.cpp",
-    "srcs/statistics.cpp",
-    "include/auto_test/cpu_load.h",
-    "include/auto_test/payload.h",
-    "include/auto_test/reader.h",
-    "include/auto_test/statistics.h",
-    "include/auto_test/writer.h",
-    "include/json/json.hpp",
-]
+_BASE_SRCS = glob([
+    "srcs/*.cpp",
+    "include/auto_test/*.h",
+])
 
 _CYBER_SRCS = [
     "cyber/main.cpp",
@@ -24,13 +14,13 @@ cc_binary(
     srcs = _BASE_SRCS,
     includes = [
         "include",
-        "include/json",
         ".",
     ],
     deps = [
         "//pt-dummy:pt_dummy",
         "//pt-shared_any:pt_shared_any",
         "//pt-intrusive_variant:pt_intrusive_variant",
+        "//3rd/nlohmann_json:json",
     ],
     # CMake had -DUSE_THREAD_TIMER and C++17.
     copts = [
