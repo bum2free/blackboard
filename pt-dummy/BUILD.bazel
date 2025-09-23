@@ -6,7 +6,7 @@ cc_library(
     includes = ["includes"],
     visibility = ["//visibility:public"],
     deps = [
-        "//concurrentqueue",
+        "//3rd/concurrentqueue",
         "//common",
     ]
 )

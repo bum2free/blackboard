@@ -2,3 +2,4 @@ a.out
 *.swp
 bazel-*
 MODULE.bazel.lock
+cscope*

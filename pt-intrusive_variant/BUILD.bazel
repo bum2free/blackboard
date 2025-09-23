@@ -8,7 +8,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@boost.smart_ptr", #Note: in cyber6.0 docker, need change to @boost
-        "//concurrentqueue",
+        "//3rd/concurrentqueue",
         "//common",
     ]
 )
