@@ -5,3 +5,5 @@
 # For more details, please check https://github.com/bazelbuild/bazel/issues/18958
 ###############################################################################
 module(name = "blackboard", version = "0.1")
+
+bazel_dep(name = "boost.smart_ptr", version = "1.89.0")
