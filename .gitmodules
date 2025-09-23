@@ -1,0 +1,4 @@
+[submodule "3rd/behavior_tree"]
+	path = 3rd/behavior_tree
+	url = git@github.com:bum2free/BehaviorTree.CPP.git
+	branch = dev-blackboard
