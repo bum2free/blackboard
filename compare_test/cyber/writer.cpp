@@ -1,8 +1,8 @@
 #include "cyber/writer.h"
 #include "shared_any_cyber_recoder_blackboard.h"
 
-WriterCyberWrapper::WriterCyberWrapper(const WriterDescription &desc, bool use_cyber_timestamp) :
-    Writer(desc) {
+WriterCyberWrapper::WriterCyberWrapper(const TestWriterDescription &desc, bool use_cyber_timestamp) :
+    TestWriter(desc) {
     node_ = apollo::cyber::CreateNode(desc.name);
     for (const auto& pt : desc.payload_descs) {
         if (pt.type == FixedLengthPayload::NAME()) {
@@ -73,8 +73,8 @@ using apollo::cyber::examples::proto::Chatter;
 
 extern BlackBoardSharedAnyCyberRecorder& get_BlackBoardSharedAnyCyberRecorder(bool record_mode = true);
 
-WriterSharedPtrAnyCyberRecord::WriterSharedPtrAnyCyberRecord(const WriterDescription &desc)
-    : Writer(desc), payload_descs(desc.payload_descs) {
+WriterSharedPtrAnyCyberRecord::WriterSharedPtrAnyCyberRecord(const TestWriterDescription &desc)
+    : TestWriter(desc), payload_descs(desc.payload_descs) {
 }
 
 std::pair<size_t, size_t> WriterSharedPtrAnyCyberRecord::run_send(void) {

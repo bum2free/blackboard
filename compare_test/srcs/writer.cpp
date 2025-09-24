@@ -12,7 +12,7 @@
 #include <thread>
 
 static void __cb_posix_timer(union sigval sv) {
-    auto* writer = static_cast<Writer*>(sv.sival_ptr);
+    auto* writer = static_cast<TestWriter*>(sv.sival_ptr);
     if (writer) {
         writer->run();
         // Restart the timer for the next interval
@@ -20,7 +20,7 @@ static void __cb_posix_timer(union sigval sv) {
     }
 }
 
-Writer::Writer(const WriterDescription &desc) {
+TestWriter::TestWriter(const TestWriterDescription &desc) {
     this->name = desc.name;
     this->interval_ms = desc.interval_ms;
     this->burden_ms = desc.burden_ms;
@@ -39,7 +39,7 @@ Writer::Writer(const WriterDescription &desc) {
 #endif
 }
 
-void Writer::start(void) {
+void TestWriter::start(void) {
 #ifdef USE_THREAD_TIMER
     timer_thread = std::thread([this]() {
         while (true) {
@@ -58,7 +58,7 @@ void Writer::start(void) {
 #endif
 }
 
-void Writer::run(void) {
+void TestWriter::run(void) {
     auto& statistics = Statistics::get_instance();
     uint64_t cpu_us = consume_cpu_in_ms(burden_ms, [this, &statistics]() {
         auto result = run_send();
@@ -69,8 +69,8 @@ void Writer::run(void) {
     statistics.add_cpu_time_us(cpu_us);
 }
 //////////////////////////////////////////////////////////////////////////////
-WriterDummy::WriterDummy(const WriterDescription &desc)
-    : Writer(desc) {
+TestWriterDummy::TestWriterDummy(const TestWriterDescription &desc)
+    : TestWriter(desc) {
     for (const auto& pt : desc.payload_descs) {
         auto creator = get_payload_creator_by_name(pt.type, pt.max_size);
         if (creator) {
@@ -79,7 +79,7 @@ WriterDummy::WriterDummy(const WriterDescription &desc)
     }
 }
 
-std::pair<size_t, size_t> WriterDummy::run_send(void) {
+std::pair<size_t, size_t> TestWriterDummy::run_send(void) {
     size_t send_count = 0, send_bytes = 0;
     auto& blackboard = BlackboardDummy::get_instance();
     for (const auto& creator : payload_creators) {
@@ -96,11 +96,11 @@ std::pair<size_t, size_t> WriterDummy::run_send(void) {
 //////////////////////////////////////////////////////////////////////////////
 extern BlackBoardSharedAny& get_BlackBoardSharedAny();
 
-WriterProtoSharedPtrAny::WriterProtoSharedPtrAny(const WriterDescription &desc)
-    : Writer(desc), payload_descs(desc.payload_descs) {
+TestWriterProtoSharedPtrAny::TestWriterProtoSharedPtrAny(const TestWriterDescription &desc)
+    : TestWriter(desc), payload_descs(desc.payload_descs) {
 }
 
-std::pair<size_t, size_t> WriterProtoSharedPtrAny::run_send(void) {
+std::pair<size_t, size_t> TestWriterProtoSharedPtrAny::run_send(void) {
     size_t send_count = 0, send_bytes = 0;
     auto& blackboard = get_BlackBoardSharedAny();
 
@@ -129,11 +129,11 @@ std::pair<size_t, size_t> WriterProtoSharedPtrAny::run_send(void) {
 //////////////////////////////////////////////////////////////////////////////
 BlackBoardIntrusiveVariant<DynamicLengthPayload, FixedLengthPayload>& get_blackBoardIntrusiveVariant();
 
-WriterProtoIntrusiveVariant::WriterProtoIntrusiveVariant(const WriterDescription &desc)
-    : Writer(desc), payload_descs(desc.payload_descs) {
+TestWriterProtoIntrusiveVariant::TestWriterProtoIntrusiveVariant(const TestWriterDescription &desc)
+    : TestWriter(desc), payload_descs(desc.payload_descs) {
 }
 
-std::pair<size_t, size_t> WriterProtoIntrusiveVariant::run_send(void) {
+std::pair<size_t, size_t> TestWriterProtoIntrusiveVariant::run_send(void) {
     size_t send_count = 0, send_bytes = 0;
     auto& blackboard = get_blackBoardIntrusiveVariant();
 

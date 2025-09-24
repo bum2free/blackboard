@@ -8,10 +8,10 @@
 #include "cyber/reader.h"
 
 int test_cyber_blackboard(const PayloadDescs& payload_descs,
-                          const WriterDescs& writer_descs,
-                          const ReaderDescs& reader_descs) {
-    static std::vector<std::unique_ptr<Writer>> writers;
-    static std::vector<std::unique_ptr<Reader>> readers;
+                          const TestWriterDescs& writer_descs,
+                          const TestReaderDescs& reader_descs) {
+    static std::vector<std::unique_ptr<TestWriter>> writers;
+    static std::vector<std::unique_ptr<TestReader>> readers;
 
     apollo::cyber::Init("cyber_blackboard_test");
     // Create and run writers
@@ -32,10 +32,10 @@ int test_cyber_blackboard(const PayloadDescs& payload_descs,
 }
 
 int test_cyber_async_blackboard(const PayloadDescs& payload_descs,
-                          const WriterDescs& writer_descs,
-                          const ReaderDescs& reader_descs) {
-    static std::vector<std::unique_ptr<Writer>> writers;
-    static std::vector<std::unique_ptr<Reader>> readers;
+                          const TestWriterDescs& writer_descs,
+                          const TestReaderDescs& reader_descs) {
+    static std::vector<std::unique_ptr<TestWriter>> writers;
+    static std::vector<std::unique_ptr<TestReader>> readers;
 
     apollo::cyber::Init("cyber_blackboard_test");
     // Create and run writers
@@ -55,10 +55,10 @@ int test_cyber_async_blackboard(const PayloadDescs& payload_descs,
 }
 
 int test_cyber_norecv_blackboard(const PayloadDescs& payload_descs,
-                          const WriterDescs& writer_descs,
-                          const ReaderDescs& reader_descs) {
-    static std::vector<std::unique_ptr<Writer>> writers;
-    static std::vector<std::unique_ptr<Reader>> readers;
+                          const TestWriterDescs& writer_descs,
+                          const TestReaderDescs& reader_descs) {
+    static std::vector<std::unique_ptr<TestWriter>> writers;
+    static std::vector<std::unique_ptr<TestReader>> readers;
 
     apollo::cyber::Init("cyber_blackboard_test");
     // Create and run writers
@@ -78,12 +78,12 @@ BlackBoardSharedAnyCyberRecorder& get_BlackBoardSharedAnyCyberRecorder(bool reco
 }
 
 int test_sharedAny_CyberRecord_blackboard(const PayloadDescs& payload_descs,
-    const WriterDescs& writer_descs,
-    const ReaderDescs& reader_descs,
+    const TestWriterDescs& writer_descs,
+    const TestReaderDescs& reader_descs,
     bool record_mode)
 {
-    static std::vector<std::unique_ptr<Writer>> writers;
-    static std::vector<std::unique_ptr<Reader>> readers;
+    static std::vector<std::unique_ptr<TestWriter>> writers;
+    static std::vector<std::unique_ptr<TestReader>> readers;
 
     //initial set mode
     get_BlackBoardSharedAnyCyberRecorder(record_mode);

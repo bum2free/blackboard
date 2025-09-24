@@ -16,29 +16,29 @@
 #include <thread>
 
 int test_dummy_blackboard(const PayloadDescs& payload_descs,
-    const WriterDescs& writer_descs,
-    const ReaderDescs& reader_descs);
+    const TestWriterDescs& writer_descs,
+    const TestReaderDescs& reader_descs);
 int test_sharedAny_blackboard(const PayloadDescs& payload_descs,
-    const WriterDescs& writer_descs,
-    const ReaderDescs& reader_descs);
+    const TestWriterDescs& writer_descs,
+    const TestReaderDescs& reader_descs);
 int test_intrusiveVariant_blackboard(const PayloadDescs& payload_descs,
-    const WriterDescs& writer_descs,
-    const ReaderDescs& reader_descs);
+    const TestWriterDescs& writer_descs,
+    const TestReaderDescs& reader_descs);
 int test_bt_blackboard(const PayloadDescs& payload_descs,
-    const WriterDescs& writer_descs,
-    const ReaderDescs& reader_descs);
+    const TestWriterDescs& writer_descs,
+    const TestReaderDescs& reader_descs);
 int test_cyber_blackboard(const PayloadDescs& payload_descs,
-    const WriterDescs& writer_descs,
-    const ReaderDescs& reader_descs);
+    const TestWriterDescs& writer_descs,
+    const TestReaderDescs& reader_descs);
 int test_cyber_async_blackboard(const PayloadDescs& payload_descs,
-    const WriterDescs& writer_descs,
-    const ReaderDescs& reader_descs);
+    const TestWriterDescs& writer_descs,
+    const TestReaderDescs& reader_descs);
 int test_cyber_norecv_blackboard(const PayloadDescs& payload_descs,
-    const WriterDescs& writer_descs,
-    const ReaderDescs& reader_descs);
+    const TestWriterDescs& writer_descs,
+    const TestReaderDescs& reader_descs);
 int test_sharedAny_CyberRecord_blackboard(const PayloadDescs& payload_descs,
-    const WriterDescs& writer_descs,
-    const ReaderDescs& reader_descs,
+    const TestWriterDescs& writer_descs,
+    const TestReaderDescs& reader_descs,
     bool record_mode);
 
 int main(int argc, char** argv) {
@@ -60,8 +60,8 @@ int main(int argc, char** argv) {
     }
 
     PayloadDescs payload_descs;
-    WriterDescs writer_descs;
-    ReaderDescs reader_descs;
+    TestWriterDescs writer_descs;
+    TestReaderDescs reader_descs;
 
     //load configuration from file and using nlohmann::json to parse it
     //for exmaple format:
@@ -141,7 +141,7 @@ int main(int argc, char** argv) {
     // Parse writers
     if (config_json.contains("writers")) {
         for (const auto& item : config_json["writers"]) {
-            WriterDescription desc;
+            TestWriterDescription desc;
             desc.name = item.value("name", "");
             for (const auto& payload_name : item.value("payloads", nlohmann::json::array())) {
                 if (payload_descs.find(payload_name) != payload_descs.end()) {
@@ -164,7 +164,7 @@ int main(int argc, char** argv) {
     // Parse readers
     if (config_json.contains("readers")) {
         for (const auto& item : config_json["readers"]) {
-            ReaderDescription desc;
+            TestReaderDescription desc;
             desc.name = item.value("name", "");
             for (const auto& payload_name : item.value("payloads", nlohmann::json::array())) {
                 if (payload_descs.find(payload_name) != payload_descs.end()) {
@@ -260,22 +260,22 @@ int main(int argc, char** argv) {
 }
 
 int test_dummy_blackboard(const PayloadDescs& payload_descs,
-                          const WriterDescs& writer_descs,
-                          const ReaderDescs& reader_descs) {
-    static std::vector<std::unique_ptr<Writer>> writers;
-    static std::vector<std::unique_ptr<Reader>> readers;
+                          const TestWriterDescs& writer_descs,
+                          const TestReaderDescs& reader_descs) {
+    static std::vector<std::unique_ptr<TestWriter>> writers;
+    static std::vector<std::unique_ptr<TestReader>> readers;
 
     // Create and run writers
     for (const auto& writer_desc : writer_descs) {
         //printf("Creating writer: %s\n", writer_desc.name.c_str());
-        writers.emplace_back(std::make_unique<WriterDummy>(writer_desc));
+        writers.emplace_back(std::make_unique<TestWriterDummy>(writer_desc));
         writers.back()->start();
     }
 
     // Create and run readers
     for (const auto& reader_desc : reader_descs) {
         //printf("Creating reader: %s\n", reader_desc.name.c_str());
-        readers.emplace_back(std::make_unique<ReaderDummy>(reader_desc));
+        readers.emplace_back(std::make_unique<TestReaderDummy>(reader_desc));
         readers.back()->start();
     }
 
@@ -288,22 +288,22 @@ BlackBoardSharedAny& get_BlackBoardSharedAny() {
 }
 
 int test_sharedAny_blackboard(const PayloadDescs& payload_descs,
-                          const WriterDescs& writer_descs,
-                          const ReaderDescs& reader_descs) {
-    static std::vector<std::unique_ptr<Writer>> writers;
-    static std::vector<std::unique_ptr<Reader>> readers;
+                          const TestWriterDescs& writer_descs,
+                          const TestReaderDescs& reader_descs) {
+    static std::vector<std::unique_ptr<TestWriter>> writers;
+    static std::vector<std::unique_ptr<TestReader>> readers;
 
     // Create and run writers
     for (const auto& writer_desc : writer_descs) {
         //printf("Creating writer: %s\n", writer_desc.name.c_str());
-        writers.emplace_back(std::make_unique<WriterProtoSharedPtrAny>(writer_desc));
+        writers.emplace_back(std::make_unique<TestWriterProtoSharedPtrAny>(writer_desc));
         writers.back()->start();
     }
 
     // Create and run readers
     for (const auto& reader_desc : reader_descs) {
         //printf("Creating reader: %s\n", reader_desc.name.c_str());
-        readers.emplace_back(std::make_unique<ReaderProtoSharedPtrAny>(reader_desc));
+        readers.emplace_back(std::make_unique<TestReaderProtoSharedPtrAny>(reader_desc));
         readers.back()->start();
     }
 
@@ -316,22 +316,22 @@ BlackBoardIntrusiveVariant<DynamicLengthPayload, FixedLengthPayload>& get_blackB
 }
 
 int test_intrusiveVariant_blackboard(const PayloadDescs& payload_descs,
-    const WriterDescs& writer_descs,
-    const ReaderDescs& reader_descs) {
-    static std::vector<std::unique_ptr<Writer>> writers;
-    static std::vector<std::unique_ptr<Reader>> readers;
+    const TestWriterDescs& writer_descs,
+    const TestReaderDescs& reader_descs) {
+    static std::vector<std::unique_ptr<TestWriter>> writers;
+    static std::vector<std::unique_ptr<TestReader>> readers;
 
     // Create and run writers
     for (const auto& writer_desc : writer_descs) {
         //printf("Creating writer: %s\n", writer_desc.name.c_str());
-        writers.emplace_back(std::make_unique<WriterProtoIntrusiveVariant>(writer_desc));
+        writers.emplace_back(std::make_unique<TestWriterProtoIntrusiveVariant>(writer_desc));
         writers.back()->start();
     }
 
     // Create and run readers
     for (const auto& reader_desc : reader_descs) {
         //printf("Creating reader: %s\n", reader_desc.name.c_str());
-        readers.emplace_back(std::make_unique<ReaderProtoIntrusiveVariant>(reader_desc));
+        readers.emplace_back(std::make_unique<TestReaderProtoIntrusiveVariant>(reader_desc));
         readers.back()->start();
     }
 

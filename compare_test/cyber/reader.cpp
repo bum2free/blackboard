@@ -5,8 +5,8 @@
 #include "shared_any_cyber_recoder_blackboard.h"
 #include <chrono>
 
-ReaderCyberWrapper::ReaderCyberWrapper(const ReaderDescription& desc, bool async) :
-    Reader(desc) {
+ReaderCyberWrapper::ReaderCyberWrapper(const TestReaderDescription& desc, bool async) :
+    TestReader(desc) {
     node_ = apollo::cyber::CreateNode(desc.name);
     for (const auto& pt : desc.payload_descs) {
         std::shared_ptr<apollo::cyber::ReaderBase> reader;
@@ -118,8 +118,8 @@ using apollo::cyber::examples::proto::Chatter;
 
 extern BlackBoardSharedAnyCyberRecorder& get_BlackBoardSharedAnyCyberRecorder(bool record_mode = true);
 
-ReaderSharedPtrAnyCyberRecord::ReaderSharedPtrAnyCyberRecord(const ReaderDescription& desc)
-    : Reader(desc) {
+ReaderSharedPtrAnyCyberRecord::ReaderSharedPtrAnyCyberRecord(const TestReaderDescription& desc)
+    : TestReader(desc) {
     this->payload_descs = desc.payload_descs;
 }
 

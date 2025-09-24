@@ -9,9 +9,9 @@
 #include <string>
 #include <vector>
 
-class WriterCyberWrapper : public Writer {
+class WriterCyberWrapper : public TestWriter {
 public:
-    WriterCyberWrapper(const WriterDescription &desc, bool use_cyber_timestamp = false);
+    WriterCyberWrapper(const TestWriterDescription &desc, bool use_cyber_timestamp = false);
 
     virtual ~WriterCyberWrapper() = default;
 
@@ -24,9 +24,9 @@ private:
     std::shared_ptr<apollo::cyber::Timer> cyber_timer_;
 };
 
-class WriterSharedPtrAnyCyberRecord : public Writer {
+class WriterSharedPtrAnyCyberRecord : public TestWriter {
 public:
-    WriterSharedPtrAnyCyberRecord(const WriterDescription &desc);
+    WriterSharedPtrAnyCyberRecord(const TestWriterDescription &desc);
 
     virtual ~WriterSharedPtrAnyCyberRecord() = default;
 

@@ -43,8 +43,8 @@ BT::PortsList WriterBt::providedPorts()
     return get_bt_output_ports();
 }
 
-WriterBtWrapper::WriterBtWrapper(const WriterDescription &desc, WriterBt *bt_node)
-    : Writer(desc), bt_node(bt_node)
+WriterBtWrapper::WriterBtWrapper(const TestWriterDescription &desc, WriterBt *bt_node)
+    : TestWriter(desc), bt_node(bt_node)
 {
 }
     

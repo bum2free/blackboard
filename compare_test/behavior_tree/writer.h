@@ -24,9 +24,9 @@ private:
     std::vector<PayloadDescription> payload_descs;
 };
 
-class WriterBtWrapper : public Writer {
+class WriterBtWrapper : public TestWriter {
 public:
-    WriterBtWrapper(const WriterDescription &desc, WriterBt *bt_node);
+    WriterBtWrapper(const TestWriterDescription &desc, WriterBt *bt_node);
 
     virtual ~WriterBtWrapper() = default;
 

@@ -13,7 +13,7 @@
 #include <thread>
 
 static void __cb_posix_timer(union sigval sv) {
-    auto* reader = static_cast<Reader*>(sv.sival_ptr);
+    auto* reader = static_cast<TestReader*>(sv.sival_ptr);
     if (reader) {
         reader->run();
         // Restart the timer for the next interval
@@ -21,7 +21,7 @@ static void __cb_posix_timer(union sigval sv) {
     }
 }
 
-Reader::Reader(const ReaderDescription& desc)
+TestReader::TestReader(const TestReaderDescription& desc)
     : name(desc.name), interval_ms(desc.interval_ms), burden_ms(desc.burden_ms)
 {
 #ifndef USE_THREAD_TIMER
@@ -38,7 +38,7 @@ Reader::Reader(const ReaderDescription& desc)
 #endif
 }
 
-void Reader::start(void) {
+void TestReader::start(void) {
 #ifdef USE_THREAD_TIMER
     timer_thread = std::thread([this]() {
         while (true) {
@@ -58,7 +58,7 @@ void Reader::start(void) {
 #endif
 }
 
-void Reader::run(void) {
+void TestReader::run(void) {
    auto& statistics = Statistics::get_instance();
    uint64_t cpu_us = consume_cpu_in_ms(burden_ms, [this, &statistics]() {
        auto result = run_receive();
@@ -69,12 +69,12 @@ void Reader::run(void) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-ReaderDummy::ReaderDummy(const ReaderDescription& desc)
-    : Reader(desc) {
+TestReaderDummy::TestReaderDummy(const TestReaderDescription& desc)
+    : TestReader(desc) {
     this->payload_descs = desc.payload_descs;
 }
 
-std::pair<size_t, size_t> ReaderDummy::run_receive(void) {
+std::pair<size_t, size_t> TestReaderDummy::run_receive(void) {
     size_t recv_count = 0, recv_bytes = 0;
     auto& blackboard = BlackboardDummy::get_instance();
     for (const auto& pt : payload_descs) {
@@ -97,12 +97,12 @@ std::pair<size_t, size_t> ReaderDummy::run_receive(void) {
 //////////////////////////////////////////////////////////////////////////////
 extern BlackBoardSharedAny& get_BlackBoardSharedAny();
 
-ReaderProtoSharedPtrAny::ReaderProtoSharedPtrAny(const ReaderDescription& desc)
-    : Reader(desc) {
+TestReaderProtoSharedPtrAny::TestReaderProtoSharedPtrAny(const TestReaderDescription& desc)
+    : TestReader(desc) {
     this->payload_descs = desc.payload_descs;
 }
 
-std::pair<size_t, size_t> ReaderProtoSharedPtrAny::run_receive(void) {
+std::pair<size_t, size_t> TestReaderProtoSharedPtrAny::run_receive(void) {
     size_t recv_count = 0, recv_bytes = 0;
     auto& blackboard = get_BlackBoardSharedAny();
     for (const auto& pt : payload_descs) {
@@ -124,12 +124,12 @@ std::pair<size_t, size_t> ReaderProtoSharedPtrAny::run_receive(void) {
 }
 //////////////////////////////////////////////////////////////////////////////
 extern BlackBoardIntrusiveVariant<DynamicLengthPayload, FixedLengthPayload>& get_blackBoardIntrusiveVariant();
-ReaderProtoIntrusiveVariant::ReaderProtoIntrusiveVariant(const ReaderDescription& desc)
-    : Reader(desc) {
+TestReaderProtoIntrusiveVariant::TestReaderProtoIntrusiveVariant(const TestReaderDescription& desc)
+    : TestReader(desc) {
     this->payload_descs = desc.payload_descs;
 }
 
-std::pair<size_t, size_t> ReaderProtoIntrusiveVariant::run_receive(void) {
+std::pair<size_t, size_t> TestReaderProtoIntrusiveVariant::run_receive(void) {
     size_t recv_count = 0, recv_bytes = 0;
     auto& blackboard = get_blackBoardIntrusiveVariant();
     for (const auto& pt : payload_descs) {

@@ -8,9 +8,9 @@
 #include <memory>
 #include <string>
 
-class ReaderCyberWrapper : public Reader {
+class ReaderCyberWrapper : public TestReader {
 public:
-    ReaderCyberWrapper(const ReaderDescription& desc, bool async = false);
+    ReaderCyberWrapper(const TestReaderDescription& desc, bool async = false);
 
     virtual std::pair<size_t, size_t> run_receive(void) override;
 private:
@@ -19,9 +19,9 @@ private:
     std::map<std::string, std::shared_ptr<apollo::cyber::ReaderBase>> readers_;
 };
 
-class ReaderSharedPtrAnyCyberRecord : public Reader {
+class ReaderSharedPtrAnyCyberRecord : public TestReader {
 public:
-    ReaderSharedPtrAnyCyberRecord(const ReaderDescription& desc);
+    ReaderSharedPtrAnyCyberRecord(const TestReaderDescription& desc);
 
     virtual std::pair<size_t, size_t> run_receive(void) override;
 private:

@@ -25,12 +25,12 @@ BT::PortsList get_bt_input_ports()
 }
 
 int test_bt_blackboard(const PayloadDescs& payload_descs,
-    const WriterDescs& writer_descs,
-    const ReaderDescs& reader_descs)
+    const TestWriterDescs& writer_descs,
+    const TestReaderDescs& reader_descs)
 {
     static BT::BehaviorTreeFactory factory;
-    static std::vector<std::unique_ptr<Writer>> writers;
-    static std::vector<std::unique_ptr<Reader>> readers;
+    static std::vector<std::unique_ptr<TestWriter>> writers;
+    static std::vector<std::unique_ptr<TestReader>> readers;
 
     //construct BT::Portslist for writer
     {
@@ -152,7 +152,7 @@ int test_bt_blackboard(const PayloadDescs& payload_descs,
         //printf("Node: %s, Type: %d\n", node->name().c_str(), (int)node->type());
         //find it in writer_descs
         auto it_writer = std::find_if(writer_descs.begin(), writer_descs.end(),
-            [&node](const WriterDescription& desc) { return desc.name == node->name(); });
+            [&node](const TestWriterDescription& desc) { return desc.name == node->name(); });
         if (it_writer != writer_descs.end()) {
             auto writer_node = dynamic_cast<WriterBt*>(node.get());
             if (writer_node) {
@@ -165,7 +165,7 @@ int test_bt_blackboard(const PayloadDescs& payload_descs,
         }
         //find it in reader_descs
         auto it_reader = std::find_if(reader_descs.begin(), reader_descs.end(),
-            [&node](const ReaderDescription& desc) { return desc.name == node->name(); });
+            [&node](const TestReaderDescription& desc) { return desc.name == node->name(); });
         if (it_reader != reader_descs.end()) {
             auto reader_node = dynamic_cast<ReaderBt*>(node.get());
             if (reader_node) {

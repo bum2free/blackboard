@@ -9,7 +9,7 @@
 #include <thread>
 #include <time.h>
 
-class ReaderDescription {
+class TestReaderDescription {
 public:
     std::string name;
     std::vector<PayloadDescription> payload_descs;
@@ -17,13 +17,13 @@ public:
     uint32_t burden_ms;
 };
 
-using ReaderDescs = std::vector<ReaderDescription>;
+using TestReaderDescs = std::vector<TestReaderDescription>;
 
-class Reader {
+class TestReader {
 public:
-    Reader(const ReaderDescription& desc);
+    TestReader(const TestReaderDescription& desc);
 
-    virtual ~Reader() = default;
+    virtual ~TestReader() = default;
 
     void start(void);
     void run(void);
@@ -38,27 +38,27 @@ private:
     std::thread timer_thread;
 };
 
-class ReaderDummy : public Reader {
+class TestReaderDummy : public TestReader {
 public:
-    ReaderDummy(const ReaderDescription& desc);
+    TestReaderDummy(const TestReaderDescription& desc);
 
     virtual std::pair<size_t, size_t> run_receive(void) override;
 private:
     std::vector<PayloadDescription> payload_descs;
 };
 
-class ReaderProtoSharedPtrAny : public Reader {
+class TestReaderProtoSharedPtrAny : public TestReader {
 public:
-    ReaderProtoSharedPtrAny(const ReaderDescription& desc);
+    TestReaderProtoSharedPtrAny(const TestReaderDescription& desc);
 
     virtual std::pair<size_t, size_t> run_receive(void) override;
 private:
     std::vector<PayloadDescription> payload_descs;
 };
 
-class ReaderProtoIntrusiveVariant : public Reader {
+class TestReaderProtoIntrusiveVariant : public TestReader {
 public:
-    ReaderProtoIntrusiveVariant(const ReaderDescription& desc);
+    TestReaderProtoIntrusiveVariant(const TestReaderDescription& desc);
 
     virtual std::pair<size_t, size_t> run_receive(void) override;
 private:

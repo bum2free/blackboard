@@ -24,9 +24,9 @@ private:
     std::vector<PayloadDescription> payload_descs;
 };
 
-class ReaderBtWrapper : public Reader {
+class ReaderBtWrapper : public TestReader {
 public:
-    ReaderBtWrapper(const ReaderDescription& desc, ReaderBt *bt_node);
+    ReaderBtWrapper(const TestReaderDescription& desc, ReaderBt *bt_node);
 
     virtual std::pair<size_t, size_t> run_receive(void) override;
 private:

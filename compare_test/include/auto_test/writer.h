@@ -11,7 +11,7 @@
 #include <thread>
 #include <time.h>
 
-class WriterDescription {
+class TestWriterDescription {
 public:
     std::string name;
     std::vector<PayloadDescription> payload_descs;
@@ -19,13 +19,13 @@ public:
     uint32_t burden_ms;
 };
 
-using WriterDescs = std::vector<WriterDescription>;
+using TestWriterDescs = std::vector<TestWriterDescription>;
 
-class Writer {
+class TestWriter {
 public:
-    Writer(const WriterDescription &desc);
+    TestWriter(const TestWriterDescription &desc);
 
-    virtual ~Writer() = default;
+    virtual ~TestWriter() = default;
 
     void start(void);
     void run(void);
@@ -41,32 +41,32 @@ private:
     std::thread timer_thread;
 };
 
-class WriterDummy : public Writer {
+class TestWriterDummy : public TestWriter {
 public:
-    WriterDummy(const WriterDescription &desc);
-    virtual ~WriterDummy() = default;
+    TestWriterDummy(const TestWriterDescription &desc);
+    virtual ~TestWriterDummy() = default;
 
     virtual std::pair<size_t, size_t> run_send(void) override;
 private:
     std::map<std::string, std::function<Payload*(void)>> payload_creators;
 };
 
-class WriterProtoSharedPtrAny : public Writer {
+class TestWriterProtoSharedPtrAny : public TestWriter {
 public:
-    WriterProtoSharedPtrAny(const WriterDescription &desc);
+    TestWriterProtoSharedPtrAny(const TestWriterDescription &desc);
 
-    virtual ~WriterProtoSharedPtrAny() = default;
+    virtual ~TestWriterProtoSharedPtrAny() = default;
 
     virtual std::pair<size_t, size_t> run_send(void) override;
 private:
     std::vector<PayloadDescription> payload_descs;
 };
 
-class WriterProtoIntrusiveVariant : public Writer {
+class TestWriterProtoIntrusiveVariant : public TestWriter {
 public:
-    WriterProtoIntrusiveVariant(const WriterDescription &desc);
+    TestWriterProtoIntrusiveVariant(const TestWriterDescription &desc);
 
-    virtual ~WriterProtoIntrusiveVariant() = default;
+    virtual ~TestWriterProtoIntrusiveVariant() = default;
 
     virtual std::pair<size_t, size_t> run_send(void) override;
 private:

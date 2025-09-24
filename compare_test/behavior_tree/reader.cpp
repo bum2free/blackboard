@@ -42,8 +42,8 @@ BT::PortsList ReaderBt::providedPorts()
     return get_bt_input_ports();
 }
 
-ReaderBtWrapper::ReaderBtWrapper(const ReaderDescription& desc, ReaderBt *bt_node)
-    : Reader(desc), bt_node(bt_node)
+ReaderBtWrapper::ReaderBtWrapper(const TestReaderDescription& desc, ReaderBt *bt_node)
+    : TestReader(desc), bt_node(bt_node)
 {
 }
 
