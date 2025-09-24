@@ -7,7 +7,7 @@
 #include <memory>
 #include <string>
 #include "shared_ptr_pool.h"
-#include "common/dummy_lock.h"
+#include "dummy_lock.h"
 
 class BlackBoardSharedAny {
 public:

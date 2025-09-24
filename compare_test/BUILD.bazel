@@ -17,9 +17,9 @@ cc_binary(
         ".",
     ],
     deps = [
-        "//pt-dummy:pt_dummy",
-        "//pt-shared_any:pt_shared_any",
-        "//pt-intrusive_variant:pt_intrusive_variant",
+        "//src/pt-dummy:pt_dummy",
+        "//src/pt-shared_any:pt_shared_any",
+        "//src/pt-intrusive_variant:pt_intrusive_variant",
         "//3rd/nlohmann_json:json",
     ],
     # CMake had -DUSE_THREAD_TIMER and C++17.
@@ -44,9 +44,9 @@ cc_binary(
         ".",
     ],
     deps = [
-        "//pt-dummy:pt_dummy",
-        "//pt-shared_any:pt_shared_any",
-        "//pt-intrusive_variant:pt_intrusive_variant",
+        "//src/pt-dummy:pt_dummy",
+        "//src/pt-shared_any:pt_shared_any",
+        "//src/pt-intrusive_variant:pt_intrusive_variant",
         "//3rd/nlohmann_json:json",
         "//3rd/rapidxml-1.13:rapidxml",
         "//3rd/behavior_tree:behaviortree_cpp_v3",

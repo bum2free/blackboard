@@ -6,7 +6,7 @@
 #ifdef USE_CONCURRENTQUEUE
 #include "concurrentqueue/concurrentqueue.h"
 #else
-#include "common/dummy_lock.h"
+#include "dummy_lock.h"
 #endif
 
 template<typename T>

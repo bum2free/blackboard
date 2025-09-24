@@ -1,5 +1,6 @@
 cc_library(
     name = "common",
     hdrs = ["dummy_lock.h"],
+    includes = ["."],
     visibility = ["//visibility:public"],
 )

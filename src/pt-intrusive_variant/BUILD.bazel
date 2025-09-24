@@ -9,7 +9,7 @@ cc_library(
     deps = [
         "@boost.smart_ptr", #Note: in cyber6.0 docker, need change to @boost
         "//3rd/concurrentqueue",
-        "//common",
+        "//src/common",
     ]
 )
 

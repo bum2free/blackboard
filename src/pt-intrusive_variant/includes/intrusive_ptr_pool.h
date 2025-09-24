@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-#include "common/dummy_lock.h"
+#include "dummy_lock.h"
 
 template<typename T>
 class IntrusiveWrapper {
