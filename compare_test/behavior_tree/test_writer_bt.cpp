@@ -1,6 +1,6 @@
 #include <memory>
 
-#include "behavior_tree/writer.h"
+#include "behavior_tree/test_writer_bt.h"
 
 WriterBt::WriterBt(const std::string& name, const BT::NodeConfiguration& config)
     : BT::SyncActionNode(name, config) {

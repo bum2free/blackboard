@@ -1,8 +1,8 @@
 #ifndef __CYBER_WRITER_H__
 #define __CYBER_WRITER_H__
 #include "cyber/cyber.h"
-#include "auto_test/writer.h"
-#include "auto_test/payload.h"
+#include "test_writer.h"
+#include "payload.h"
 
 #include <map>
 #include <memory>

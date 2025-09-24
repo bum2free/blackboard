@@ -1,7 +1,7 @@
-#ifndef __WRITER_H__
-#define __WRITER_H__
+#ifndef __TEST_WRITER_H__
+#define __TEST_WRITER_H__
 
-#include "auto_test/payload.h"
+#include "payload.h"
 
 #include <functional>
 #include <map>

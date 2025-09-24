@@ -1,6 +1,6 @@
-#include "auto_test/payload.h"
-#include "auto_test/writer.h"
-#include "auto_test/reader.h"
+#include "payload.h"
+#include "test_writer.h"
+#include "test_reader.h"
 
 #include "cyber/cyber.h"
 

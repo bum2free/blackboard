@@ -1,7 +1,7 @@
-#ifndef __READER_H__
-#define __READER_H__
+#ifndef __TEST_READER_H__
+#define __TEST_READER_H__
 
-#include "auto_test/payload.h"
+#include "payload.h"
 
 #include <vector>
 #include <stdint.h>

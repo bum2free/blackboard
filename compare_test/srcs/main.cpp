@@ -1,7 +1,7 @@
-#include "auto_test/payload.h"
-#include "auto_test/writer.h"
-#include "auto_test/reader.h"
-#include "auto_test/statistics.h"
+#include "payload.h"
+#include "test_writer.h"
+#include "test_reader.h"
+#include "statistics.h"
 
 #include "shared_any_blackboard.h"
 #include "intrusive_variant_blackboard.h"

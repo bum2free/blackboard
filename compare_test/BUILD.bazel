@@ -1,6 +1,6 @@
 _BASE_SRCS = glob([
     "srcs/*.cpp",
-    "include/auto_test/*.h",
+    "include/*.h",
 ])
 
 _CYBER_SRCS = [

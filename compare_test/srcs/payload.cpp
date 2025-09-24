@@ -1,4 +1,4 @@
-#include "auto_test/payload.h"
+#include "payload.h"
 
 #include <cassert>
 #include <iostream>

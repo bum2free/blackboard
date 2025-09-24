@@ -1,8 +1,8 @@
-#ifndef __BEHAVIOR_TREE_READER_H__
-#define __BEHAVIOR_TREE_READER_H__
+#ifndef __BEHAVIOR_TREE_TEST_READER_H__
+#define __BEHAVIOR_TREE_TEST_READER_H__
 #include "behaviortree_cpp_v3/bt_factory.h"
-#include "auto_test/reader.h"
-#include "auto_test/payload.h"
+#include "test_reader.h"
+#include "payload.h"
 
 #include <string>
 #include <vector>

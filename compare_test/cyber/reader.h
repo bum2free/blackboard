@@ -1,8 +1,8 @@
 #ifndef __CYBER_READER_H__
 #define __CYBER_READER_H__
 #include "cyber/cyber.h"
-#include "auto_test/reader.h"
-#include "auto_test/payload.h"
+#include "test_reader.h"
+#include "payload.h"
 
 #include <map>
 #include <memory>

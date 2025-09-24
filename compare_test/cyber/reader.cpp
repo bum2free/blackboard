@@ -1,6 +1,7 @@
 #include "cyber/reader.h"
-#include "auto_test/cpu_load.h"
-#include "auto_test/statistics.h"
+#include "reader.h"
+#include "cpu_load.h"
+#include "statistics.h"
 
 #include "shared_any_cyber_recoder_blackboard.h"
 #include <chrono>

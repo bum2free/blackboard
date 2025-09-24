@@ -1,4 +1,4 @@
-#include "behavior_tree/reader.h"
+#include "behavior_tree/test_reader_bt.h"
 
 ReaderBt::ReaderBt(const std::string& name, const BT::NodeConfiguration& config)
     : BT::SyncActionNode(name, config) {

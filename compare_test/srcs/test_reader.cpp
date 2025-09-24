@@ -1,6 +1,6 @@
-#include "auto_test/reader.h"
-#include "auto_test/cpu_load.h"
-#include "auto_test/statistics.h"
+#include "test_reader.h"
+#include "cpu_load.h"
+#include "statistics.h"
 
 #include "dummy_blackboard.h"
 #include "shared_any_blackboard.h"

@@ -1,4 +1,4 @@
-#include "auto_test/cpu_load.h"
+#include "cpu_load.h"
 
 #include <chrono>
 uint64_t consume_cpu_in_ms(uint32_t duration_ms,

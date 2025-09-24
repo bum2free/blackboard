@@ -1,8 +1,8 @@
-#include "auto_test/payload.h"
-#include "auto_test/writer.h"
-#include "auto_test/reader.h"
-#include "behavior_tree/writer.h"
-#include "behavior_tree/reader.h"
+#include "payload.h"
+#include "test_writer.h"
+#include "test_reader.h"
+#include "behavior_tree/test_writer_bt.h"
+#include "behavior_tree/test_reader_bt.h"
 
 #include "behaviortree_cpp_v3/bt_factory.h"
 #include "rapidxml.hpp"
