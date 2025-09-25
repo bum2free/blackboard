@@ -1,6 +1,7 @@
 #ifndef __ATOMIC_INTRUSIVE_PTR_POOL_H__
 #define __ATOMIC_INTRUSIVE_PTR_POOL_H__
 
+#include <atomic>
 #include <boost/intrusive_ptr.hpp>
 #include <iostream>
 #include <vector>

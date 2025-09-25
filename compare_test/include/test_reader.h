@@ -38,30 +38,6 @@ private:
     std::thread timer_thread;
 };
 
-class TestReaderDummy : public TestReader {
-public:
-    TestReaderDummy(const TestReaderDescription& desc);
 
-    virtual std::pair<size_t, size_t> run_receive(void) override;
-private:
-    std::vector<PayloadDescription> payload_descs;
-};
 
-class TestReaderProtoSharedPtrAny : public TestReader {
-public:
-    TestReaderProtoSharedPtrAny(const TestReaderDescription& desc);
-
-    virtual std::pair<size_t, size_t> run_receive(void) override;
-private:
-    std::vector<PayloadDescription> payload_descs;
-};
-
-class TestReaderProtoIntrusiveVariant : public TestReader {
-public:
-    TestReaderProtoIntrusiveVariant(const TestReaderDescription& desc);
-
-    virtual std::pair<size_t, size_t> run_receive(void) override;
-private:
-    std::vector<PayloadDescription> payload_descs;
-};
 #endif

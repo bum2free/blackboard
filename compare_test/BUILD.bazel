@@ -1,13 +1,23 @@
 _BASE_SRCS = glob([
     "srcs/*.cpp",
     "include/*.h",
+    "pt-dummy/*.cpp",
+    "pt-dummy/*.h",
+    "pt-shared_any/*.cpp",
+    "pt-shared_any/*.h",
+    "pt-intrusive_variant/*.cpp",
+    "pt-intrusive_variant/*.h",
 ])
 
-_CYBER_SRCS = [
-    "cyber/main.cpp",
-    "cyber/writer.cpp",
-    "cyber/reader.cpp",
-]
+_TEST_CYBER_SRCS = glob([
+    "cyber/*.cpp",
+    "cyber/*.h",
+])
+
+_TEST_BT_SRCS = glob([
+    "behavior_tree/*.cpp",
+    "behavior_tree/*.h",
+])
 
 cc_binary(
     name = "test_blackboard",
@@ -30,14 +40,10 @@ cc_binary(
     linkopts = ["-lpthread"],
     visibility = ["//visibility:public"],
 )
-_BH_SRCS = glob([
-    "behavior_tree/*.cpp",
-    "behavior_tree/*.h",
-])
 
 cc_binary(
     name = "test_blackboard_bh",
-    srcs = _BASE_SRCS + _BH_SRCS,
+    srcs = _BASE_SRCS + _TEST_BT_SRCS,
     includes = [
         "include",
         "include/json",
