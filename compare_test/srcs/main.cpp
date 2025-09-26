@@ -6,6 +6,7 @@
 #include "pt-dummy/test_pt_dummy.h"
 #include "pt-shared_any/test_pt_shared_any.h"
 #include "pt-intrusive_variant/test_pt_intrusive_variant.h"
+#include "pr-blackboard/test_pr_blackboard.h"
 
 #include <json.hpp>
 
@@ -218,6 +219,10 @@ int main(int argc, char** argv) {
         std::cout << "Using shared_any_blackboard with cyber playback" << std::endl;
         test_sharedAny_CyberRecord_blackboard(payload_descs, writer_descs, reader_descs, false);
 #endif
+    } else if (bb_type == "prod") {
+        // Use prod blackboard
+        std::cout << "Using prod_blackboard" << std::endl;
+        test_pr_blackboard(payload_descs, writer_descs, reader_descs);
     } else {
         std::cerr << "Unknown blackboard type: " << bb_type << std::endl;
         return 1;

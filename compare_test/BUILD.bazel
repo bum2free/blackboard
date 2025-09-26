@@ -19,6 +19,11 @@ _TEST_BT_SRCS = glob([
     "behavior_tree/*.h",
 ])
 
+_TEST_PR_SRCS = glob([
+    "pr-blackboard/*.cpp",
+    "pr-blackboard/*.h",
+])
+
 cc_binary(
     name = "test_blackboard",
     srcs = _BASE_SRCS,
@@ -61,6 +66,33 @@ cc_binary(
     copts = [
         "-DUSE_THREAD_TIMER",
         "-DENABLE_BT_BLACKBOARD",
+        "-std=c++17",
+    ],
+    linkopts = ["-lpthread"],
+    visibility = ["//visibility:public"],
+)
+
+
+cc_binary(
+    name = "test_blackboard_pr",
+    srcs = _BASE_SRCS + _TEST_PR_SRCS,
+    includes = [
+        "include",
+        "include/json",
+        ".",
+    ],
+    deps = [
+        "//src/pt-dummy:pt_dummy",
+        "//src/pt-shared_any:pt_shared_any",
+        "//src/pt-intrusive_variant:pt_intrusive_variant",
+        "//src/pr-blackboard:pr_blackboard",
+        "//3rd/nlohmann_json:json",
+        "//3rd/rapidxml-1.13:rapidxml",
+        "//3rd/behavior_tree:behaviortree_cpp_v3",
+    ],
+    # CMake had -DUSE_THREAD_TIMER and C++17.
+    copts = [
+        "-DUSE_THREAD_TIMER",
         "-std=c++17",
     ],
     linkopts = ["-lpthread"],

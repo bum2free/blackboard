@@ -1,0 +1,13 @@
+cc_library(
+    name = "pr_blackboard",
+    hdrs = [
+        "includes/pr-blackboard/reader.h",
+        "includes/pr-blackboard/writer.h",
+        "includes/pr-blackboard/blackboard.h",
+    ],
+    includes = ["includes"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//3rd/behavior_tree:behaviortree_cpp_v3",
+    ]
+)
